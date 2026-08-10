@@ -800,6 +800,13 @@ class DaVinciGame {
     this.selectedGuessedValue = null;
     this.btnConfirmGuess.disabled = true;
 
+    // 모바일 하단 대시보드에서 '실시간 확률' 탭으로 자동 전환 & 실시간 분석표 표시
+    if (this.mobileTabBtns && this.mobileTabPanes) {
+      this.mobileTabBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-tab') === 'prob'));
+      this.mobileTabPanes.forEach(pane => pane.classList.toggle('active', pane.id === 'mobile-tab-prob'));
+    }
+    this.renderHelperData();
+
     this.guessTargetDesc.innerHTML = `상대방의 <strong>${index + 1}번째 (${tile.color === 'black' ? '검은색' : '하얀색'}) 타일</strong>을 선택했습니다.`;
 
     const failedGuesses = this.guessHistory

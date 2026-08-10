@@ -1670,177 +1670,194 @@ button {
    ========================================================================== */
 
 @media (max-width: 768px) {
-  /* 헤더 모바일 디자인 - 여백 최소화 */
+  /* 앱 전체 세로 뷰포트 고정 */
+  #app {
+    height: 100vh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* 헤더 모바일 디자인 - 여백 극소화 */
   .app-header {
-    height: 38px !important;
-    padding: 0 0.5rem !important;
+    height: 32px !important;
+    padding: 0 0.4rem !important;
+    flex-shrink: 0 !important;
   }
   .logo h1 {
-    font-size: 0.95rem !important;
+    font-size: 0.88rem !important;
   }
   .badge-ai {
-    font-size: 0.58rem !important;
-    padding: 0.1rem 0.3rem !important;
+    font-size: 0.55rem !important;
+    padding: 0.05rem 0.25rem !important;
   }
   .btn-icon {
-    padding: 0.25rem 0.4rem !important;
-    font-size: 0.75rem !important;
+    padding: 0.15rem 0.35rem !important;
+    font-size: 0.7rem !important;
   }
   .btn-label {
     display: none;
   }
 
-  /* 메인 게임 컨테이너 - 최상단 여백 밀착 & 하단 헬퍼 배치 공간 확보 */
+  /* 메인 게임 컨테이너 - 위쪽 여백 밀착 */
   .game-container {
-    padding: 2px 4px 0 4px !important;
-    gap: 2px !important;
+    padding: 1px 3px 0 3px !important;
+    gap: 1px !important;
     flex: 0 0 auto !important;
     margin-bottom: 0 !important;
   }
 
-  /* AI 및 플레이어 세션 카드 - 수직 밀착 */
+  /* AI 및 플레이어 세션 카드 - 높이 및 수직 여백 최소화 */
   .player-section {
-    padding: 0.25rem 0.4rem !important;
-    border-radius: 6px !important;
+    padding: 1px 3px !important;
+    border-radius: 4px !important;
   }
   .player-info {
-    margin-bottom: 0.15rem !important;
+    margin-bottom: 0px !important;
+    gap: 4px !important;
   }
   .avatar {
-    width: 22px !important;
-    height: 22px !important;
-    font-size: 0.85rem !important;
+    width: 16px !important;
+    height: 16px !important;
+    font-size: 0.75rem !important;
   }
   .player-info .name {
-    font-size: 0.8rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1 !important;
   }
   .player-info .sub-desc, .player-status {
-    display: none !important; /* 설명 문구 숨김으로 공간 최상단 밀착 */
+    display: none !important; /* 설명 문구 숨김으로 공간 상단 밀착 */
   }
   .tile-count-badge {
-    font-size: 0.65rem !important;
-    padding: 0.1rem 0.4rem !important;
+    font-size: 0.6rem !important;
+    padding: 0.02rem 0.3rem !important;
   }
 
   /* 중앙 턴 메시지 & 바닥패 패널 컴팩트 밀착 */
   .center-board {
-    padding: 0.25rem 0.4rem !important;
-    gap: 0.25rem !important;
-    border-radius: 6px !important;
+    padding: 1px 3px !important;
+    gap: 1px !important;
+    border-radius: 4px !important;
   }
   .turn-indicator-card {
-    padding: 0.25rem 0.6rem !important;
-    border-radius: 16px !important;
+    padding: 1px 5px !important;
+    border-radius: 12px !important;
   }
   .turn-status-text {
-    font-size: 0.82rem !important;
+    font-size: 0.78rem !important;
   }
   .turn-sub-text {
-    font-size: 0.68rem !important;
+    font-size: 0.65rem !important;
     margin-top: 0 !important;
   }
 
   /* 바닥패 (검은패/흰패): 한 줄 가로 배열 */
   .deck-area-laidout {
-    gap: 0.35rem !important;
+    gap: 0.25rem !important;
   }
   .deck-rows-container {
-    padding: 0.25rem 0.4rem !important;
-    gap: 0.2rem !important;
+    padding: 0.15rem 0.3rem !important;
+    gap: 0.1rem !important;
   }
   .deck-row-wrapper {
-    gap: 0.15rem !important;
+    gap: 0.1rem !important;
   }
   .row-label {
-    font-size: 0.68rem !important;
+    font-size: 0.65rem !important;
   }
   .deck-row {
     display: flex !important;
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
-    gap: 3px !important;
-    min-height: 40px !important;
-    padding-bottom: 2px !important;
+    gap: 2px !important;
+    min-height: 36px !important;
+    padding-bottom: 1px !important;
   }
   .deck-tile-item, .deck-tile-pickable {
-    width: clamp(23px, 7vw, 30px) !important;
-    height: clamp(35px, 10.5vw, 44px) !important;
-    border-radius: 5px !important;
+    width: clamp(21px, 6.5vw, 27px) !important;
+    height: clamp(32px, 9.5vw, 40px) !important;
+    border-radius: 4px !important;
     flex-shrink: 0 !important;
   }
   .deck-tile-item .tile-pattern {
-    font-size: 0.8rem !important;
+    font-size: 0.75rem !important;
   }
 
-  /* AI 힌트 받기 버튼 크기 축소 */
+  /* AI 힌트 받기 버튼 크기 극소화 */
   .action-bar {
-    margin-top: 0.1rem !important;
+    margin-top: 0px !important;
+    padding: 0 !important;
   }
   .btn-hint {
-    padding: 0.25rem 0.75rem !important;
-    font-size: 0.75rem !important;
-    border-radius: 16px !important;
+    padding: 0.15rem 0.5rem !important;
+    font-size: 0.68rem !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
   }
 
-  /* 타일 랙 및 손패 카드 - 반응형 폰트/크기 콤팩트화 */
+  /* 타일 랙 및 손패 카드 - 크기 다이어트 */
   .tiles-rack {
-    gap: 3px !important;
+    gap: 2px !important;
     flex-wrap: wrap;
     justify-content: center;
     padding: 0 !important;
   }
   .tile-card {
-    width: clamp(34px, 9.5vw, 44px) !important;
-    height: clamp(50px, 14vw, 66px) !important;
-    border-radius: 6px !important;
+    width: clamp(30px, 8.5vw, 40px) !important;
+    height: clamp(42px, 12vw, 56px) !important;
+    border-radius: 5px !important;
   }
   .tile-number {
-    font-size: clamp(1rem, 3.2vw, 1.4rem) !important;
+    font-size: clamp(0.95rem, 2.8vw, 1.2rem) !important;
   }
   .tile-pattern {
-    font-size: clamp(0.85rem, 2.8vw, 1.1rem) !important;
+    font-size: clamp(0.75rem, 2.4vw, 1rem) !important;
   }
   .tile-exposure-badge {
-    font-size: 0.55rem !important;
-    padding: 1px 2px !important;
-    bottom: -15px !important;
+    font-size: 0.5rem !important;
+    padding: 0 2px !important;
+    bottom: -13px !important;
   }
   .tile-badge-success, .tile-badge-fail, .tile-badge-revealed {
-    font-size: 0.55rem !important;
-    padding: 1px 3px !important;
-    top: -14px !important;
+    font-size: 0.5rem !important;
+    padding: 0 2px !important;
+    top: -13px !important;
   }
 
-  /* 모바일 하단 임베디드 헬퍼 대시보드 (상시 노출 탭 패널) */
+  /* 모바일 하단 임베디드 헬퍼 대시보드 - 남는 공간 전체 확보 (flex: 1) */
   .mobile-helper-dashboard {
     display: flex !important;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 4px;
-    background: rgba(10, 16, 28, 0.95);
-    border-top: 1px solid rgba(0, 242, 254, 0.4);
-    border-radius: 10px 10px 0 0;
-    box-shadow: 0 -4px 15px rgba(0,0,0,0.6);
-    overflow: hidden;
+    flex-direction: column !important;
+    flex: 1 !important;
+    width: 100% !important;
+    margin-top: 2px !important;
+    background: rgba(8, 12, 22, 0.96) !important;
+    border-top: 1px solid rgba(0, 242, 254, 0.4) !important;
+    border-radius: 8px 8px 0 0 !important;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.6) !important;
+    overflow: hidden !important;
+    min-height: 200px !important;
   }
 
   .mobile-tabs-header {
     display: flex;
     gap: 3px;
-    padding: 3px 4px;
-    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 4px;
+    background: rgba(0, 0, 0, 0.6);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 32px;
+    flex-shrink: 0;
   }
 
   .mobile-tab-btn {
     flex: 1;
-    padding: 5px 2px;
+    padding: 4px 2px;
     font-size: 0.72rem;
     font-weight: 600;
     color: #94a3b8;
     background: transparent;
     border: 1px solid transparent;
-    border-radius: 6px;
+    border-radius: 5px;
     text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1856,9 +1873,10 @@ button {
 
   .mobile-tabs-content {
     padding: 6px 8px;
-    max-height: 210px;
-    min-height: 140px;
-    overflow-y: auto;
+    flex: 1 !important;
+    max-height: none !important;
+    height: 100% !important;
+    overflow-y: auto !important;
   }
 
   .mobile-tab-pane {
