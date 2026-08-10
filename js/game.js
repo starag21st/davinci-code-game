@@ -492,13 +492,51 @@ class DaVinciGame {
 
   calculateDrawPickRisk(color) {
     if (!this.deck || !this.helper) return null;
-    const remainingTilesOfColor = this.deck.tiles.filter(t => t.color === color);
-    if (remainingTilesOfColor.length === 0) return null;
+    
+    // 바닥 더미에 남아있는 해당 색상 타일 수 체크
+    const remainingCount = (color === 'black') ? this.deck.remainingBlackCount : this.deck.remainingWhiteCount;
+    if (remainingCount === 0) return null;
 
-    let totalMaxRiskSum = 0;
-    let sampleCount = 0;
+    // 이미 확인되거나 공개된 타일(유저 손패 + AI 공개패) 값 파악
+    const knownValues = new Set();
+    this.userHand.forEach(t => {
+      if (!t.isJoker) knownValues.add(`${t.color}_${t.value}`);
+    });
+    this.aiHand.forEach(t => {
+      if (t.isRevealed && !t.isJoker) knownValues.add(`${t.color}_${t.value}`);
+    });
 
-    for (const simTile of remainingTilesOfColor) {
+    // 공개된 타일을 제외하고 바닥에 남아있을 수 있는 미확인 후보 숫자/조커 목록 추출
+    const possibleCandidates = [];
+    for (let v = 0; v <= 11; v++) {
+      if (!knownValues.has(`${color}_${v}`)) {
+        possibleCandidates.push({ color, value: v, isJoker: false });
+      }
+    }
+
+    if (this.jokerRule !== 'none') {
+      const isUserJokerKnown = this.userHand.some(t => t.isJoker && t.color === color);
+      const isAiJokerKnown = this.aiHand.some(t => t.isRevealed && t.isJoker && t.color === color);
+      if (!isUserJokerKnown && !isAiJokerKnown) {
+        possibleCandidates.push({ color, value: 'J', isJoker: true });
+      }
+    }
+
+    if (possibleCandidates.length === 0) return 0;
+
+    let totalRiskSum = 0;
+    let validSampleCount = 0;
+
+    // 공개된 타일을 제외한 나머지 각각의 숫자를 가져왔을 때의 노출확률 시뮬레이션
+    for (const cand of possibleCandidates) {
+      const simTile = {
+        color: cand.color,
+        value: cand.value,
+        isJoker: cand.isJoker,
+        isRevealed: false,
+        id: `sim_target_${cand.color}_${cand.value}`
+      };
+
       const tempUserHand = [...this.userHand, simTile];
       tempUserHand.sort((a, b) => {
         if (a.isJoker && b.isJoker) return 0;
@@ -510,21 +548,25 @@ class DaVinciGame {
         return 0;
       });
 
-      const probMap = this.helper.calculateProbabilities(tempUserHand, this.aiHand, this.guessHistory, this.jokerRule);
-      const insertedTileIdx = tempUserHand.indexOf(simTile);
+      const targetIdx = tempUserHand.findIndex(t => t.id === simTile.id);
+      if (targetIdx === -1) continue;
 
-      if (insertedTileIdx !== -1 && probMap && probMap.has(insertedTileIdx)) {
-        const possibleVals = probMap.get(insertedTileIdx);
+      const probMap = this.helper.calculateProbabilities(tempUserHand, this.aiHand, this.guessHistory, this.jokerRule);
+
+      if (probMap && probMap.has(targetIdx)) {
+        const possibleVals = probMap.get(targetIdx);
         if (possibleVals && possibleVals.length > 0) {
-          const maxRisk = Math.max(...possibleVals.map(([val, pct]) => pct));
-          totalMaxRiskSum += maxRisk;
-          sampleCount++;
+          const maxRiskPct = Math.max(...possibleVals.map(([val, pct]) => pct));
+          totalRiskSum += maxRiskPct;
+          validSampleCount++;
         }
       }
     }
 
-    if (sampleCount === 0) return 0;
-    return Math.round(totalMaxRiskSum / sampleCount);
+    if (validSampleCount === 0) return 0;
+
+    // 각 미공개 숫자를 가져왔을 때의 노출확률 평균 산출
+    return Math.round(totalRiskSum / validSampleCount);
   }
 
   renderLaidoutDecks() {
