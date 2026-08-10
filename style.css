@@ -1211,12 +1211,16 @@ button {
 }
 
 .turn-choice-group {
-  display: flex !important;
+  display: none;
   gap: 0.6rem !important;
   justify-content: center !important;
   align-items: center !important;
   margin-top: 0.75rem !important;
   width: 100% !important;
+}
+
+.turn-choice-group.active {
+  display: flex !important;
 }
 
 .turn-choice-group button {

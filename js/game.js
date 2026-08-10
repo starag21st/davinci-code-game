@@ -316,6 +316,7 @@ class DaVinciGame {
   openDiceModal() {
     this.hideModal(this.modalSettings);
     this.turnChoiceGroup.style.display = 'none';
+    this.turnChoiceGroup.classList.remove('active');
     this.btnRollDice.style.display = 'block';
     this.renderDiceDisplay(this.userDiceDisplay, 1);
     this.renderDiceDisplay(this.aiDiceDisplay, 1);
@@ -390,6 +391,7 @@ class DaVinciGame {
         this.diceResultMsg.innerHTML = `🎉 <strong>승리!</strong> (${this.userDiceVal} vs ${this.aiDiceVal}) 선공/후공을 선택하세요.`;
         this.btnRollDice.style.display = 'none';
         this.turnChoiceGroup.style.display = 'flex';
+        this.turnChoiceGroup.classList.add('active');
       } else if (this.aiDiceVal > this.userDiceVal) {
         this.sound.playFail();
         this.diceResultMsg.innerHTML = `🤖 <strong>AI 승리!</strong> (${this.aiDiceVal} vs ${this.userDiceVal}) AI가 선공을 선택했습니다.`;
