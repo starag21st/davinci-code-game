@@ -1774,8 +1774,54 @@ button {
   .modal-card {
     width: 95vw !important;
     max-width: 95vw !important;
-    padding: 1rem !important;
+    padding: 0.75rem !important;
   }
+  .modal-header h2 {
+    font-size: 1.1rem !important;
+  }
+  .setting-title {
+    font-size: 0.85rem !important;
+    margin-bottom: 0.4rem !important;
+  }
+  .setting-group {
+    margin-bottom: 0.6rem !important;
+  }
+
+  /* 휴대폰에서 카드 아래 부연 설명 생략 & 폰트/패딩 축소 */
+  .card-content .desc {
+    display: none !important; /* 부연 설명 생략으로 콤팩트화 */
+  }
+  .card-content {
+    padding: 0.4rem 0.2rem !important;
+    gap: 0.15rem !important;
+    border-radius: 8px !important;
+  }
+  .card-content .icon {
+    font-size: 1.1rem !important;
+  }
+  .card-content .name {
+    font-size: 0.75rem !important;
+  }
+  .badge-winrate {
+    font-size: 0.6rem !important;
+    padding: 1px 3px !important;
+    margin-top: 1px !important;
+  }
+
+  /* 모바일 옵션 그리드 수평 콤팩트 배치 */
+  .option-grid-4 {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+  }
+  .option-grid-3 {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 4px !important;
+  }
+  .option-grid-5 {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 3px !important;
+  }
+
   #modal-guess.active {
     padding-top: 14vh !important;
   }
@@ -1802,6 +1848,14 @@ button {
 
 @media (max-width: 480px) {
   /* 더 작은 초소형 모바일 화면 (아이폰 SE 등) */
+  .card-content .name {
+    font-size: 0.68rem !important;
+  }
+  .badge-winrate {
+    font-size: 0.55rem !important;
+    padding: 0.5px 2px !important;
+    letter-spacing: -0.3px;
+  }
   .tile-card {
     width: clamp(34px, 10vw, 44px);
     height: clamp(52px, 14vw, 68px);
