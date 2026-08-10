@@ -589,11 +589,11 @@ class DaVinciGame {
         }
 
         if (is100) {
-          exposureBadgeHTML = `<div class="tile-exposure-badge risk-100">상대노출: 100%</div>`;
+          exposureBadgeHTML = `<div class="tile-exposure-badge risk-100">100%</div>`;
         } else if (riskPct >= 50) {
-          exposureBadgeHTML = `<div class="tile-exposure-badge risk-high">상대노출: ${riskPct}%</div>`;
+          exposureBadgeHTML = `<div class="tile-exposure-badge risk-high">${riskPct}%</div>`;
         } else {
-          exposureBadgeHTML = `<div class="tile-exposure-badge risk-low">상대노출: ${riskPct}%</div>`;
+          exposureBadgeHTML = `<div class="tile-exposure-badge risk-low">${riskPct}%</div>`;
         }
       }
 
