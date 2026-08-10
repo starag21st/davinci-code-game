@@ -150,62 +150,66 @@ button {
   font-weight: 600;
 }
 
-.btn-icon {
-  padding: 0.6rem 1.1rem;
+/* --- 최상단 메뉴바 동일 크기 조그만 아이콘 버튼 --- */
+.btn-head-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
   background: rgba(255, 255, 255, 0.08);
   color: var(--color-text-main);
-  border: 1px solid var(--border-color);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
 }
 
-.btn-icon:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.3);
+.btn-head-icon:hover {
   transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
 }
 
-.btn-sound {
+.btn-head-icon.btn-sound {
   background: rgba(56, 176, 0, 0.15);
   border-color: rgba(56, 176, 0, 0.4);
   color: #70e000;
 }
 
-.btn-sound.muted {
+.btn-head-icon.btn-sound.muted {
   background: rgba(255, 77, 109, 0.15);
   border-color: rgba(255, 77, 109, 0.4);
   color: var(--color-red);
 }
 
-.btn-rule {
+.btn-head-icon.btn-rule {
   background: rgba(255, 183, 3, 0.12);
   border-color: rgba(255, 183, 3, 0.4);
   color: var(--color-gold);
 }
 
-.btn-rule:hover {
-  background: rgba(255, 183, 3, 0.25);
-  border-color: var(--color-gold);
-  box-shadow: 0 0 15px rgba(255, 183, 3, 0.4);
-}
-
-.btn-accent {
+.btn-head-icon.btn-accent {
   background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.3));
   border-color: rgba(0, 242, 254, 0.5);
   color: var(--color-cyan);
 }
 
-.btn-accent:hover {
-  box-shadow: 0 0 18px rgba(0, 242, 254, 0.5);
-  background: linear-gradient(135deg, rgba(0, 242, 254, 0.3), rgba(79, 172, 254, 0.45));
+.btn-head-icon.btn-hint {
+  background: linear-gradient(135deg, rgba(255, 183, 3, 0.25), rgba(251, 133, 0, 0.3));
+  border-color: rgba(255, 183, 3, 0.6);
+  color: var(--color-gold);
 }
 
-.btn-secondary {
-  padding: 0.6rem 1.1rem;
+.btn-head-icon.btn-hint:hover {
+  box-shadow: 0 0 15px rgba(255, 183, 3, 0.6);
+}
+
+.btn-head-icon.btn-secondary {
   background: rgba(255, 255, 255, 0.1);
-  color: var(--color-text-main);
-  border: 1px solid var(--border-color);
+  border-color: var(--border-color);
 }
 
 .btn-secondary:hover {
@@ -1691,9 +1695,11 @@ button {
     font-size: 0.55rem !important;
     padding: 0.05rem 0.25rem !important;
   }
-  .btn-icon {
-    padding: 0.15rem 0.35rem !important;
-    font-size: 0.7rem !important;
+  .btn-head-icon {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.85rem !important;
+    border-radius: 5px !important;
   }
   .btn-label {
     display: none;

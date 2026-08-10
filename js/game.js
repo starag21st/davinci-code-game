@@ -143,10 +143,10 @@ class DaVinciGame {
         const muted = this.sound.toggleMute();
         if (muted) {
           this.btnToggleSound.classList.add('muted');
-          this.btnToggleSound.innerHTML = '🔇 <span class="btn-label">소리 끔</span>';
+          this.btnToggleSound.innerHTML = '🔇';
         } else {
           this.btnToggleSound.classList.remove('muted');
-          this.btnToggleSound.innerHTML = '🔊 <span class="btn-label">소리 켜짐</span>';
+          this.btnToggleSound.innerHTML = '🔊';
           this.sound.playSelect();
         }
       });

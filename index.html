@@ -25,18 +25,11 @@
         <h1>Da Vinci Code <span class="badge-ai">AI Master</span></h1>
       </div>
       <div class="header-controls">
-        <button id="btn-toggle-sound" class="btn-icon btn-sound" title="효과음 켜기/끄기">
-          🔊 <span class="btn-label" id="sound-label">소리 켜짐</span>
-        </button>
-        <button id="btn-show-rules" class="btn-icon btn-rule" title="게임 상세 규칙 안내">
-          📖 <span class="btn-label">게임 규칙</span>
-        </button>
-        <button id="btn-toggle-helper" class="btn-icon btn-accent" title="스마트 헬퍼 사이드바">
-          🧠 <span class="btn-label">통합 스마트 헬퍼</span>
-        </button>
-        <button id="btn-new-game" class="btn-secondary">
-          ⚙️ <span class="btn-label">새 게임 설정</span>
-        </button>
+        <button id="btn-toggle-sound" class="btn-head-icon btn-sound" title="효과음 켜기/끄기">🔊</button>
+        <button id="btn-show-rules" class="btn-head-icon btn-rule" title="게임 상세 규칙 안내">📖</button>
+        <button id="btn-toggle-helper" class="btn-head-icon btn-accent" title="스마트 헬퍼 사이드바">🧠</button>
+        <button id="btn-hint" class="btn-head-icon btn-hint" title="AI 스마트 힌트 받기" style="display: none;">💡</button>
+        <button id="btn-new-game" class="btn-head-icon btn-secondary" title="새 게임 설정">⚙️</button>
       </div>
     </header>
 
@@ -94,9 +87,6 @@
 
         <!-- 액션 제어 버튼 -->
         <div class="action-bar" id="action-bar">
-          <button id="btn-hint" class="btn-hint" style="display: none;">
-            💡 AI 힌트 받기
-          </button>
           <button id="btn-pass-turn" class="btn-action btn-success" style="display: none;">
             ✋ 턴 종료 (가져온 타일 숨기기)
           </button>
