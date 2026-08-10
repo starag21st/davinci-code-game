@@ -1283,41 +1283,60 @@ button {
   backdrop-filter: blur(8px) !important;
 }
 
-/* 추측 입력 팝업: AI 패 영역(0~85px) 아래인 바닥패 구역 공간에 극소화 콤팩트 카드로 배치 (상단 AI패 & 하단 내 패 100% 선명 노출) */
+/* 추측 입력 팝업: 바닥패 영역 공간(높이 ~80px) 안에 쏙 들어가는 초미니 콤팩트 카드 (상단 AI패 5장 & 하단 내 패 5장 100% 완벽 노출) */
 #modal-guess.active {
   align-items: flex-start !important;
-  padding-top: 90px !important;    /* AI 패 5장 아래인 중앙 바닥패 위치에 콤팩트하게 정렬 */
+  padding-top: 105px !important;    /* 정확히 AI 상대패 직후인 중앙 바닥패 위치에 밀착 배치 */
   pointer-events: none !important;
 }
 
 #modal-guess.active .modal-card {
   pointer-events: auto !important;
-  width: 86vw !important;
-  max-width: 300px !important;
-  padding: 0.2rem 0.35rem !important;
-  background: rgba(8, 14, 25, 0.97) !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 242, 254, 0.4), 0 0 15px rgba(0, 242, 254, 0.2) !important;
+  width: 82vw !important;
+  max-width: 275px !important;
+  padding: 0.15rem 0.3rem !important;
+  background: rgba(8, 14, 25, 0.98) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 242, 254, 0.5), 0 0 12px rgba(0, 242, 254, 0.25) !important;
   border-radius: 6px !important;
 }
 
-#modal-guess .modal-header h2 {
-  font-size: 0.7rem !important;
-  margin-bottom: 0px !important;
+#modal-guess .modal-header {
+  padding: 0.15rem 0.25rem !important;
+  border-bottom: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
 }
 
-#modal-guess .guess-target-desc {
-  font-size: 0.65rem !important;
-  margin-bottom: 0px !important;
+#modal-guess .modal-header h3 {
+  font-size: 0.68rem !important;
+  margin: 0 !important;
   color: var(--color-cyan) !important;
 }
 
-#modal-guess .guess-tip-text {
-  font-size: 0.58rem !important;
-  margin-bottom: 0px !important;
+#modal-guess .modal-header .btn-close {
+  font-size: 0.85rem !important;
+  padding: 0 4px !important;
+  line-height: 1 !important;
 }
 
-#modal-guess .number-picker-container label {
-  display: none !important; /* 중복 안내문구 생략으로 슬림화 */
+#modal-guess .modal-body {
+  padding: 0.1rem 0.25rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1px !important;
+}
+
+#modal-guess .guess-desc {
+  font-size: 0.62rem !important;
+  margin: 0 0 1px 0 !important;
+  line-height: 1.1 !important;
+}
+
+#modal-guess .target-tile-preview,
+#modal-guess .history-tip-badge,
+#modal-guess .input-label {
+  display: none !important; /* 높이 최소화를 위해 중복 영역 생략 */
 }
 
 #modal-guess .number-picker-grid {
@@ -1327,18 +1346,27 @@ button {
 }
 
 #modal-guess .btn-num-pick {
-  height: 20px !important;
-  font-size: 0.72rem !important;
+  height: 18px !important;
+  font-size: 0.68rem !important;
   padding: 0 !important;
   border-radius: 3px !important;
+  line-height: 18px !important;
+}
+
+#modal-guess .modal-footer {
+  padding: 0.15rem 0.25rem !important;
+  border-top: none !important;
+  background: transparent !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 #modal-guess #btn-confirm-guess {
-  height: 22px !important;
-  padding: 1px 6px !important;
-  font-size: 0.65rem !important;
-  margin-top: 2px !important;
-  border-radius: 3px !important;
+  height: 20px !important;
+  padding: 0 8px !important;
+  font-size: 0.62rem !important;
+  margin-top: 1px !important;
+  border-radius: 4px !important;
 }
 
 /* 추측 성공 행동 선택 창: AI 섹션 아래에 배치 */
@@ -2086,7 +2114,7 @@ button {
   }
 
   #modal-guess.active {
-    padding-top: 88px !important; /* AI 패 5장 직후인 중앙 바닥패 위치에 극소화 슬림 카드로 정밀 정렬 */
+    padding-top: 102px !important; /* AI 패 5장 직후인 바닥패 영역 공간에 초미니 콤팩트 카드로 쏙 배치 */
   }
   #modal-success-action.active {
     padding-top: 14vh !important;
