@@ -108,6 +108,18 @@ class DaVinciGame {
     this.chkAutoDeduce = document.getElementById('chk-auto-deduce');
     this.btnResetMatrix = document.getElementById('btn-reset-matrix');
 
+    // Mobile Bottom Helper Dashboard Tabs & Elements
+    this.mobileHelperDashboard = document.getElementById('mobile-helper-dashboard');
+    this.mobileTargetInfo = document.getElementById('mobile-target-info');
+    this.mobileProbChart = document.getElementById('mobile-prob-chart');
+    this.mobileMatrixGridContainer = document.getElementById('mobile-matrix-grid-container');
+    this.mobileHistoryList = document.getElementById('mobile-history-list');
+    this.mobileTabBtns = document.querySelectorAll('.mobile-tab-btn');
+    this.mobileTabPanes = document.querySelectorAll('.mobile-tab-pane');
+    this.mobileHistoryFilterBtns = document.querySelectorAll('.history-filter-btn-mobile');
+    this.chkAutoDeduceMobile = document.getElementById('chk-auto-deduce-mobile');
+    this.btnResetMatrixMobile = document.getElementById('btn-reset-matrix-mobile');
+
     // Modals
     this.modalSettings = document.getElementById('modal-settings');
     this.modalRules = document.getElementById('modal-rules');
@@ -212,12 +224,62 @@ class DaVinciGame {
       this.chkAutoDeduce.addEventListener('change', (e) => {
         this.sound.playSelect();
         this.helper.autoDeduceEnabled = e.target.checked;
+        if (this.chkAutoDeduceMobile) this.chkAutoDeduceMobile.checked = e.target.checked;
         this.renderHelperData();
       });
     }
 
     if (this.btnResetMatrix) {
       this.btnResetMatrix.addEventListener('click', () => {
+        this.sound.playSelect();
+        this.helper.resetMatrix();
+        this.renderHelperData();
+      });
+    }
+
+    // Mobile Bottom Dashboard Tabs & Events
+    if (this.mobileTabBtns) {
+      this.mobileTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.sound.playSelect();
+          const targetTab = btn.getAttribute('data-tab');
+          this.mobileTabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          if (this.mobileTabPanes) {
+            this.mobileTabPanes.forEach(pane => {
+              if (pane.id === `mobile-tab-${targetTab}`) pane.classList.add('active');
+              else pane.classList.remove('active');
+            });
+          }
+        });
+      });
+    }
+
+    if (this.mobileHistoryFilterBtns) {
+      this.mobileHistoryFilterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.sound.playSelect();
+          this.historyFilter = btn.getAttribute('data-filter');
+          if (this.historyFilterBtns) {
+            this.historyFilterBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-filter') === this.historyFilter));
+          }
+          this.mobileHistoryFilterBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-filter') === this.historyFilter));
+          this.renderHistoryList();
+        });
+      });
+    }
+
+    if (this.chkAutoDeduceMobile) {
+      this.chkAutoDeduceMobile.addEventListener('change', (e) => {
+        this.sound.playSelect();
+        if (this.chkAutoDeduce) this.chkAutoDeduce.checked = e.target.checked;
+        this.helper.autoDeduceEnabled = e.target.checked;
+        this.renderHelperData();
+      });
+    }
+
+    if (this.btnResetMatrixMobile) {
+      this.btnResetMatrixMobile.addEventListener('click', () => {
         this.sound.playSelect();
         this.helper.resetMatrix();
         this.renderHelperData();
@@ -1133,10 +1195,13 @@ class DaVinciGame {
     // 1. 실시간 확률 계산기
     if (this.selectedTargetTile && !this.selectedTargetTile.isRevealed) {
       const tileIdx = this.aiHand.indexOf(this.selectedTargetTile) + 1;
-      this.helperTargetInfo.innerHTML = `상대방 <strong>${tileIdx}번째 (${this.selectedTargetTile.color === 'black' ? '검은색' : '하얀색'}) 타일</strong>의 확률 분석:`;
+      const infoText = `상대방 <strong>${tileIdx}번째 (${this.selectedTargetTile.color === 'black' ? '검은색' : '하얀색'}) 타일</strong>의 확률 분석:`;
+      if (this.helperTargetInfo) this.helperTargetInfo.innerHTML = infoText;
+      if (this.mobileTargetInfo) this.mobileTargetInfo.innerHTML = infoText;
 
       const probs = probMap.get(this.selectedTargetTile.id) || {};
-      this.probChartContainer.innerHTML = '';
+      if (this.probChartContainer) this.probChartContainer.innerHTML = '';
+      if (this.mobileProbChart) this.mobileProbChart.innerHTML = '';
 
       Object.entries(probs).forEach(([val, pct]) => {
         const row = document.createElement('div');
@@ -1148,11 +1213,15 @@ class DaVinciGame {
           </div>
           <span class="prob-val">${pct}%</span>
         `;
-        this.probChartContainer.appendChild(row);
+        if (this.probChartContainer) this.probChartContainer.appendChild(row.cloneNode(true));
+        if (this.mobileProbChart) this.mobileProbChart.appendChild(row);
       });
     } else {
-      this.helperTargetInfo.innerHTML = `<p class="info-msg">상대방 비공개 타일을 클릭하면 각 숫자별 확률 분석표가 나타납니다.</p>`;
-      this.probChartContainer.innerHTML = '';
+      const emptyMsg = `<p class="info-msg">상대방 비공개 타일을 클릭하면 각 숫자별 확률 분석표가 나타납니다.</p>`;
+      if (this.helperTargetInfo) this.helperTargetInfo.innerHTML = emptyMsg;
+      if (this.mobileTargetInfo) this.mobileTargetInfo.innerHTML = emptyMsg;
+      if (this.probChartContainer) this.probChartContainer.innerHTML = '';
+      if (this.mobileProbChart) this.mobileProbChart.innerHTML = '';
     }
 
     // 2. 소거 노정표
@@ -1163,8 +1232,6 @@ class DaVinciGame {
   }
 
   renderMatrixGrid(probMap) {
-    if (!this.matrixGridContainer) return;
-    this.matrixGridContainer.innerHTML = '';
     const table = document.createElement('table');
     table.className = 'matrix-table';
 
@@ -1198,15 +1265,23 @@ class DaVinciGame {
     bodyHTML += '</tbody>';
 
     table.innerHTML = headerHTML + bodyHTML;
-    this.matrixGridContainer.appendChild(table);
+    
+    if (this.matrixGridContainer) {
+      this.matrixGridContainer.innerHTML = '';
+      this.matrixGridContainer.appendChild(table.cloneNode(true));
+    }
+    if (this.mobileMatrixGridContainer) {
+      this.mobileMatrixGridContainer.innerHTML = '';
+      this.mobileMatrixGridContainer.appendChild(table);
+    }
   }
 
   /**
    * 상세 지목 기록 (전체 / 나 / AI 필터링 연동)
    */
   renderHistoryList() {
-    if (!this.sidebarHistoryList) return;
-    this.sidebarHistoryList.innerHTML = '';
+    if (this.sidebarHistoryList) this.sidebarHistoryList.innerHTML = '';
+    if (this.mobileHistoryList) this.mobileHistoryList.innerHTML = '';
 
     // 필터링 적용
     let filteredHistory = [...this.guessHistory];
@@ -1217,7 +1292,9 @@ class DaVinciGame {
     }
 
     if (filteredHistory.length === 0) {
-      this.sidebarHistoryList.innerHTML = `<p class="info-msg">해당 조건의 지목 기록이 없습니다.</p>`;
+      const emptyMsg = `<p class="info-msg">해당 조건의 지목 기록이 없습니다.</p>`;
+      if (this.sidebarHistoryList) this.sidebarHistoryList.innerHTML = emptyMsg;
+      if (this.mobileHistoryList) this.mobileHistoryList.innerHTML = emptyMsg;
       return;
     }
 
@@ -1244,7 +1321,8 @@ class DaVinciGame {
         item.innerHTML = `<div class="history-line-code">${lineText}</div>`;
       }
 
-      this.sidebarHistoryList.appendChild(item);
+      if (this.sidebarHistoryList) this.sidebarHistoryList.appendChild(item.cloneNode(true));
+      if (this.mobileHistoryList) this.mobileHistoryList.appendChild(item);
     });
   }
 

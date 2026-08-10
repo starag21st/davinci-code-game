@@ -118,8 +118,48 @@
         <div class="tiles-rack" id="user-tiles-rack">
           <!-- JS로 동적 생성됨 (타일 아래 상대 맞춤 노출 확률 뱃지 표시) -->
         </div>
-      </section>
     </main>
+
+    <!-- 모바일 하단 임베디드 스마트 헬퍼 대시보드 (상시 노출 탭 패널) -->
+    <div class="mobile-helper-dashboard" id="mobile-helper-dashboard">
+      <div class="mobile-tabs-header">
+        <button class="mobile-tab-btn active" data-tab="prob">📊 실시간 확률</button>
+        <button class="mobile-tab-btn" data-tab="matrix">📝 소거 노정표</button>
+        <button class="mobile-tab-btn" data-tab="history">📜 상세지목기록</button>
+      </div>
+
+      <div class="mobile-tabs-content">
+        <!-- 탭 1: 실시간 확률 계산기 -->
+        <div class="mobile-tab-pane active" id="mobile-tab-prob">
+          <div class="mobile-target-info" id="mobile-target-info">
+            <span class="info-msg">상대방 타일을 클릭하면 분석표가 표시됩니다.</span>
+          </div>
+          <div class="mobile-prob-chart" id="mobile-prob-chart"></div>
+        </div>
+
+        <!-- 탭 2: 소거 노정표 -->
+        <div class="mobile-tab-pane" id="mobile-tab-matrix">
+          <div class="matrix-mini-controls mobile-controls">
+            <label class="toggle-switch-mini">
+              <input type="checkbox" id="chk-auto-deduce-mobile" checked>
+              <span class="label-text">자동소거</span>
+            </label>
+            <button id="btn-reset-matrix-mobile" class="btn-micro">초기화</button>
+          </div>
+          <div class="matrix-grid-container" id="mobile-matrix-grid-container"></div>
+        </div>
+
+        <!-- 탭 3: 상세지목기록 -->
+        <div class="mobile-tab-pane" id="mobile-tab-history">
+          <div class="history-filter-group mobile-filter">
+            <button class="history-filter-btn-mobile active" data-filter="all">전체</button>
+            <button class="history-filter-btn-mobile" data-filter="user">나</button>
+            <button class="history-filter-btn-mobile" data-filter="ai">AI</button>
+          </div>
+          <div class="history-list" id="mobile-history-list"></div>
+        </div>
+      </div>
+    </div>
 
     <!-- 스마트 헬퍼 3종 + 지목기록 통합 대시보드 사이드바 -->
     <aside class="helper-sidebar" id="helper-sidebar">
