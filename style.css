@@ -1430,6 +1430,33 @@ button {
   overflow-y: auto;
 }
 
+/* 대진 설정 모달 헤더: 제목 한줄 고정 + 게임 규칙 버튼은 아랫줄 세로 배치 */
+#modal-settings .modal-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 0.35rem !important;
+}
+
+#modal-settings .modal-header h2 {
+  white-space: nowrap !important;
+  font-size: clamp(0.95rem, 3.8vw, 1.25rem) !important;
+  margin: 0 !important;
+}
+
+#modal-settings #btn-open-rules-from-settings {
+  font-size: 0.78rem !important;
+  padding: 0.25rem 0.65rem !important;
+}
+
+/* 초기 손패 카드 3행 레이아웃 (검정N / 흰색N / 승률N%) */
+.card-content .name-line {
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #ffffff;
+  line-height: 1.15;
+}
+
 .modal-footer {
   padding: 1.25rem 1.75rem;
   border-top: 1px solid var(--border-color);
@@ -2010,8 +2037,9 @@ button {
   .card-content .icon {
     font-size: 1.1rem !important;
   }
-  .card-content .name {
-    font-size: 0.75rem !important;
+  .card-content .name-line {
+    font-size: 0.7rem !important;
+    line-height: 1.15 !important;
   }
   .badge-winrate {
     font-size: 0.6rem !important;
