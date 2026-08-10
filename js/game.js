@@ -618,17 +618,26 @@ class DaVinciGame {
       displayEl.className = `tile-card tile-${tile.color} ${tile.isJoker ? 'tile-joker' : ''} new-drawn`;
       
       const isUserDrawn = (this.currentTurn === 'user');
-      displayEl.innerHTML = `
-        <div class="tile-inner">
-          <div class="tile-face tile-front">
-            <div class="tile-pattern">❓</div>
+      if (isUserDrawn) {
+        // 내가 뽑은 패: 물음표 레이어 없이 내 패 숫자만 깔끔하게 노출
+        displayEl.innerHTML = `
+          <div class="tile-inner" style="transform: none;">
+            <div class="tile-face tile-back" style="transform: none; backface-visibility: visible; opacity: 1;">
+              <div class="tile-number">${tile.value}</div>
+              <div class="tile-number-underline"></div>
+            </div>
           </div>
-          <div class="tile-face tile-back" style="${isUserDrawn ? 'transform: rotateY(0deg); backface-visibility: visible;' : ''}">
-            <div class="tile-number">${tile.value}</div>
-            <div class="tile-number-underline"></div>
+        `;
+      } else {
+        // AI 상대방이 뽑은 패: 비공개 물음표 표기
+        displayEl.innerHTML = `
+          <div class="tile-inner">
+            <div class="tile-face tile-front">
+              <div class="tile-pattern">❓</div>
+            </div>
           </div>
-        </div>
-      `;
+        `;
+      }
       this.drawnTileDisplay.appendChild(displayEl);
     }
 
