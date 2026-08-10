@@ -1,0 +1,18 @@
+{
+  "name": "다빈치 코드 AI 1대1 대전 & 스마트 헬퍼",
+  "short_name": "다빈치코드 AI",
+  "description": "AI와 1대1로 즐기는 추론 보드게임 다빈치 코드!",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070a12",
+  "theme_color": "#070a12",
+  "icons": [
+    {
+      "src": "DavinciCode_icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
