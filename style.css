@@ -1283,25 +1283,56 @@ button {
   backdrop-filter: blur(8px) !important;
 }
 
-/* 추측 입력 팝업: AI 상대방 패 카드 아래인 중앙 바닥패 구역 공간으로 정밀 하향 이동 (상대방 패 100% 완전 노출) */
+/* 바닥패 검정/흰색 뽑기 전 예상 노출 위험도 AI 헬퍼 뱃지 */
+.badge-draw-risk {
+  font-size: 0.7rem !important;
+  padding: 1px 6px !important;
+  border-radius: 5px !important;
+  font-weight: 700 !important;
+  margin-left: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 2px !important;
+  vertical-align: middle !important;
+}
+
+.badge-draw-risk.risk-safe {
+  background: rgba(56, 176, 0, 0.22) !important;
+  border: 1px solid rgba(56, 176, 0, 0.6) !important;
+  color: #70e000 !important;
+}
+
+.badge-draw-risk.risk-mid {
+  background: rgba(255, 183, 3, 0.22) !important;
+  border: 1px solid rgba(255, 183, 3, 0.6) !important;
+  color: #ffb703 !important;
+}
+
+.badge-draw-risk.risk-high {
+  background: rgba(255, 77, 109, 0.22) !important;
+  border: 1px solid rgba(255, 77, 109, 0.6) !important;
+  color: #ff4d6d !important;
+}
+
+/* 추측 입력 팝업: 중앙 바닥패 영역 공간 안으로 들어가도록 적정 확대 (max-width: 340px, 버튼 24px) */
 #modal-guess.active {
   align-items: flex-start !important;
-  padding-top: 268px !important;    /* AI 상대패 카드 하단을 완전히 벗어난 바닥패 구역 위치로 하향 이동 */
+  padding-top: 235px !important;    /* 바닥패 박스 공간 내부 위치 */
   pointer-events: none !important;
 }
 
 #modal-guess.active .modal-card {
   pointer-events: auto !important;
-  width: 82vw !important;
-  max-width: 275px !important;
-  padding: 0.15rem 0.3rem !important;
+  width: 88vw !important;
+  max-width: 340px !important;
+  padding: 0.35rem 0.6rem !important;
   background: rgba(8, 14, 25, 0.98) !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 242, 254, 0.5), 0 0 12px rgba(0, 242, 254, 0.25) !important;
-  border-radius: 6px !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 242, 254, 0.5), 0 0 15px rgba(0, 242, 254, 0.25) !important;
+  border-radius: 8px !important;
 }
 
 #modal-guess .modal-header {
-  padding: 0.15rem 0.25rem !important;
+  padding: 0.2rem 0.3rem !important;
   border-bottom: none !important;
   display: flex !important;
   align-items: center !important;
@@ -1309,52 +1340,52 @@ button {
 }
 
 #modal-guess .modal-header h3 {
-  font-size: 0.68rem !important;
+  font-size: 0.8rem !important;
   margin: 0 !important;
   color: var(--color-cyan) !important;
 }
 
 #modal-guess .modal-header .btn-close {
-  font-size: 0.85rem !important;
+  font-size: 1rem !important;
   padding: 0 4px !important;
   line-height: 1 !important;
 }
 
 #modal-guess .modal-body {
-  padding: 0.1rem 0.25rem !important;
+  padding: 0.2rem 0.3rem !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 1px !important;
+  gap: 2px !important;
 }
 
 #modal-guess .guess-desc {
-  font-size: 0.62rem !important;
-  margin: 0 0 1px 0 !important;
-  line-height: 1.1 !important;
+  font-size: 0.74rem !important;
+  margin: 0 0 2px 0 !important;
+  line-height: 1.15 !important;
 }
 
 #modal-guess .target-tile-preview,
 #modal-guess .history-tip-badge,
 #modal-guess .input-label {
-  display: none !important; /* 높이 최소화를 위해 중복 영역 생략 */
+  display: none !important;
 }
 
 #modal-guess .number-picker-grid {
   grid-template-columns: repeat(6, 1fr) !important;
-  gap: 2px !important;
-  margin-top: 1px !important;
+  gap: 3px !important;
+  margin-top: 2px !important;
 }
 
 #modal-guess .btn-num-pick {
-  height: 18px !important;
-  font-size: 0.68rem !important;
+  height: 24px !important;
+  font-size: 0.82rem !important;
   padding: 0 !important;
-  border-radius: 3px !important;
-  line-height: 18px !important;
+  border-radius: 4px !important;
+  line-height: 24px !important;
 }
 
 #modal-guess .modal-footer {
-  padding: 0.15rem 0.25rem !important;
+  padding: 0.25rem 0.3rem !important;
   border-top: none !important;
   background: transparent !important;
   display: flex !important;
@@ -1362,10 +1393,10 @@ button {
 }
 
 #modal-guess #btn-confirm-guess {
-  height: 20px !important;
-  padding: 0 8px !important;
-  font-size: 0.62rem !important;
-  margin-top: 1px !important;
+  height: 24px !important;
+  padding: 0 12px !important;
+  font-size: 0.72rem !important;
+  margin-top: 2px !important;
   border-radius: 4px !important;
 }
 
@@ -2114,7 +2145,7 @@ button {
   }
 
   #modal-guess.active {
-    padding-top: 258px !important; /* AI 상대패 5장 하단을 완전히 벗어나게 아래로 내려서 상대패 100% 선명 노출 */
+    padding-top: 225px !important; /* 중앙 바닥패 영역 박스 내부 공간으로 알맞게 배치 (상대패/내패 가림 없음) */
   }
   #modal-success-action.active {
     padding-top: 14vh !important;

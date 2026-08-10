@@ -490,10 +490,81 @@ class DaVinciGame {
     this.deckWhiteCount.textContent = this.deck.remainingWhiteCount;
   }
 
+  calculateDrawPickRisk(color) {
+    if (!this.deck || !this.helper) return null;
+    const remainingTilesOfColor = this.deck.tiles.filter(t => t.color === color);
+    if (remainingTilesOfColor.length === 0) return null;
+
+    let totalMaxRiskSum = 0;
+    let sampleCount = 0;
+
+    for (const simTile of remainingTilesOfColor) {
+      const tempUserHand = [...this.userHand, simTile];
+      tempUserHand.sort((a, b) => {
+        if (a.isJoker && b.isJoker) return 0;
+        if (a.isJoker) return 1;
+        if (b.isJoker) return -1;
+        if (a.value !== b.value) return a.value - b.value;
+        if (a.color === 'black' && b.color === 'white') return -1;
+        if (a.color === 'white' && b.color === 'black') return 1;
+        return 0;
+      });
+
+      const probMap = this.helper.calculateProbabilities(tempUserHand, this.aiHand, this.guessHistory, this.jokerRule);
+      const insertedTileIdx = tempUserHand.indexOf(simTile);
+
+      if (insertedTileIdx !== -1 && probMap && probMap.has(insertedTileIdx)) {
+        const possibleVals = probMap.get(insertedTileIdx);
+        if (possibleVals && possibleVals.length > 0) {
+          const maxRisk = Math.max(...possibleVals.map(([val, pct]) => pct));
+          totalMaxRiskSum += maxRisk;
+          sampleCount++;
+        }
+      }
+    }
+
+    if (sampleCount === 0) return 0;
+    return Math.round(totalMaxRiskSum / sampleCount);
+  }
+
   renderLaidoutDecks() {
     this.deckRowBlack.innerHTML = '';
     this.deckRowWhite.innerHTML = '';
     this.drawnTileDisplay.innerHTML = '';
+
+    // 바닥패 렌더링 시 유저 턴 & 뽑기 전 상태일 때 예상 노출 위험도 동적 표시
+    const blackLabelEl = document.querySelector('.badge-black-label');
+    const whiteLabelEl = document.querySelector('.badge-white-label');
+
+    if (this.currentTurn === 'user' && !this.drawnTile && this.deck) {
+      const blackRisk = this.calculateDrawPickRisk('black');
+      const whiteRisk = this.calculateDrawPickRisk('white');
+
+      if (blackLabelEl && blackRisk !== null) {
+        let badgeClass = 'risk-safe';
+        let icon = '💡';
+        let statusText = '안전';
+        if (blackRisk >= 50) { badgeClass = 'risk-high'; icon = '⚠️'; statusText = '위험'; }
+        else if (blackRisk >= 25) { badgeClass = 'risk-mid'; icon = '🔍'; statusText = '보통'; }
+        blackLabelEl.innerHTML = `🖤 검은패 (남은: <span id="deck-black-count">${this.deck.remainingBlackCount}</span>) <span class="badge-draw-risk ${badgeClass}">${icon} 예상 노출: ${blackRisk}% (${statusText})</span>`;
+      }
+
+      if (whiteLabelEl && whiteRisk !== null) {
+        let badgeClass = 'risk-safe';
+        let icon = '💡';
+        let statusText = '안전';
+        if (whiteRisk >= 50) { badgeClass = 'risk-high'; icon = '⚠️'; statusText = '위험'; }
+        else if (whiteRisk >= 25) { badgeClass = 'risk-mid'; icon = '🔍'; statusText = '보통'; }
+        whiteLabelEl.innerHTML = `🤍 흰색패 (남은: <span id="deck-white-count">${this.deck.remainingWhiteCount}</span>) <span class="badge-draw-risk ${badgeClass}">${icon} 예상 노출: ${whiteRisk}% (${statusText})</span>`;
+      }
+    } else {
+      if (blackLabelEl) {
+        blackLabelEl.innerHTML = `🖤 검은패 (남은 개수: <span id="deck-black-count">${this.deck ? this.deck.remainingBlackCount : 0}</span>) - 가져올 낱개 카드를 직접 선택하세요`;
+      }
+      if (whiteLabelEl) {
+        whiteLabelEl.innerHTML = `🤍 흰색패 (남은 개수: <span id="deck-white-count">${this.deck ? this.deck.remainingWhiteCount : 0}</span>) - 가져올 낱개 카드를 직접 선택하세요`;
+      }
+    }
 
     if (this.drawnTile) {
       const tile = this.drawnTile;
