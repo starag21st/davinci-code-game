@@ -10,8 +10,8 @@ import { SoundManager } from './sound.js';
 class DaVinciGame {
   constructor() {
     // Game Options
-    this.jokerRule = 'deck_only';
-    this.aiDifficulty = 'master';
+    this.jokerRule = 'none';
+    this.aiDifficulty = 'easy';
     this.userColorChoice = '2B2W';
 
     // Game Core State

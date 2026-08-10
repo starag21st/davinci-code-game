@@ -1440,7 +1440,8 @@ button {
 
 #modal-settings .modal-header h2 {
   white-space: nowrap !important;
-  font-size: clamp(0.95rem, 3.8vw, 1.25rem) !important;
+  font-size: clamp(1.15rem, 4.5vw, 1.5rem) !important;
+  font-weight: 800 !important;
   margin: 0 !important;
 }
 
@@ -2014,8 +2015,8 @@ button {
     max-width: 95vw !important;
     padding: 0.75rem !important;
   }
-  .modal-header h2 {
-    font-size: 1.1rem !important;
+  #modal-settings .modal-header h2 {
+    font-size: clamp(1.05rem, 4.5vw, 1.35rem) !important;
   }
   .setting-title {
     font-size: 0.85rem !important;
