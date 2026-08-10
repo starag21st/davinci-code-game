@@ -1283,10 +1283,10 @@ button {
   backdrop-filter: blur(8px) !important;
 }
 
-/* 추측 입력 팝업: 바닥패 영역 공간 안으로 내려서 위치 정렬 (상단 AI상대패 5장 & 하단 내 패 5장 100% 완전 노출) */
+/* 추측 입력 팝업: AI 상대방 패 카드 아래인 중앙 바닥패 구역 공간으로 정밀 하향 이동 (상대방 패 100% 완전 노출) */
 #modal-guess.active {
   align-items: flex-start !important;
-  padding-top: 235px !important;    /* AI 상대방 섹션(~180px) 아래인 중앙 바닥패(Center Board) 구역 내부로 확실히 이동 */
+  padding-top: 268px !important;    /* AI 상대패 카드 하단을 완전히 벗어난 바닥패 구역 위치로 하향 이동 */
   pointer-events: none !important;
 }
 
@@ -2114,7 +2114,7 @@ button {
   }
 
   #modal-guess.active {
-    padding-top: 225px !important; /* AI 상대패 5장 아래 중앙 바닥패(Center Board) 구역 내부로 확실히 이동 */
+    padding-top: 258px !important; /* AI 상대패 5장 하단을 완전히 벗어나게 아래로 내려서 상대패 100% 선명 노출 */
   }
   #modal-success-action.active {
     padding-top: 14vh !important;
