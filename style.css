@@ -1667,97 +1667,141 @@ button {
 @media (max-width: 768px) {
   /* 헤더 모바일 디자인 */
   .app-header {
-    height: 56px;
-    padding: 0 0.75rem;
+    height: 44px;
+    padding: 0 0.5rem;
   }
   .logo h1 {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
   .badge-ai {
-    font-size: 0.65rem;
-    padding: 0.15rem 0.4rem;
+    font-size: 0.6rem;
+    padding: 0.1rem 0.3rem;
   }
   .btn-icon {
-    padding: 0.4rem 0.6rem;
-    font-size: 0.85rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.8rem;
   }
   .btn-label {
     display: none;
   }
 
-  /* 메인 게임 컨테이너 */
+  /* 메인 게임 컨테이너 - 한 화면 수용을 위해 컴팩트화 */
   .game-container {
-    padding: 0.5rem 0.5rem 2rem 0.5rem;
-    gap: 0.75rem;
+    padding: 0.35rem 0.5rem 0.5rem 0.5rem !important;
+    gap: 0.35rem !important;
   }
 
   /* AI 및 플레이어 세션 카드 */
   .player-section {
-    padding: 0.75rem 0.5rem;
+    padding: 0.4rem 0.5rem !important;
     border-radius: var(--radius-md);
   }
   .player-info {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem !important;
   }
   .avatar {
-    width: 32px;
-    height: 32px;
-    font-size: 1.1rem;
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 0.95rem !important;
   }
   .player-info .name {
-    font-size: 0.95rem;
+    font-size: 0.85rem !important;
   }
   .player-info .sub-desc {
-    font-size: 0.7rem;
+    font-size: 0.65rem !important;
+  }
+  .tile-count-badge {
+    font-size: 0.7rem !important;
+    padding: 0.15rem 0.5rem !important;
   }
 
-  /* 타일 랙 및 손패 카드 - 모바일 가응 반응형 폰트/크기 */
-  .tiles-rack {
-    gap: 4px;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0.25rem 0;
-  }
-  .tile-card {
-    width: clamp(40px, 11vw, 56px);
-    height: clamp(60px, 16vw, 84px);
-    border-radius: 8px;
-  }
-  .tile-number {
-    font-size: clamp(1.3rem, 4vw, 1.8rem);
-  }
-  .tile-pattern {
-    font-size: clamp(1rem, 3.5vw, 1.4rem);
-  }
-  .tile-exposure-badge {
-    font-size: 0.6rem;
-    padding: 1px 3px;
-    bottom: -18px;
-  }
-  .tile-badge-success, .tile-badge-fail, .tile-badge-revealed {
-    font-size: 0.58rem;
-    padding: 1px 4px;
-    top: -16px;
-  }
-
-  /* 중앙 바닥패 영역 */
+  /* 중앙 턴 메시지 & 바닥패 패널 컴팩트화 */
   .center-board {
-    padding: 0.75rem 0.5rem;
+    padding: 0.4rem 0.5rem !important;
+    gap: 0.35rem !important;
+    border-radius: var(--radius-md);
+  }
+  .turn-indicator-card {
+    padding: 0.35rem 0.8rem !important;
+    border-radius: 20px;
+  }
+  .turn-status-text {
+    font-size: 0.88rem !important;
+  }
+  .turn-sub-text {
+    font-size: 0.72rem !important;
+    margin-top: 0.1rem !important;
+  }
+
+  /* 바닥패 (검은패/흰패): 한 줄에 다 들어오도록 크기 축소 & nowrap */
+  .deck-area-laidout {
+    gap: 0.5rem !important;
+  }
+  .deck-rows-container {
+    padding: 0.4rem 0.5rem !important;
+    gap: 0.35rem !important;
+  }
+  .deck-row-wrapper {
+    gap: 0.25rem !important;
+  }
+  .row-label {
+    font-size: 0.7rem !important;
   }
   .deck-row {
-    margin-bottom: 0.5rem;
+    display: flex !important;
+    flex-wrap: nowrap !important; /* 무조건 한 줄에 가로 배열 */
+    overflow-x: auto !important;
+    gap: 3px !important;
+    min-height: 44px !important;
+    padding-bottom: 2px;
   }
-  .deck-tiles-grid {
-    gap: 4px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    justify-content: flex-start;
+  .deck-tile-item, .deck-tile-pickable {
+    width: clamp(25px, 7.5vw, 32px) !important;
+    height: clamp(38px, 11vw, 48px) !important;
+    border-radius: 6px !important;
+    flex-shrink: 0 !important;
   }
-  .deck-tile-pickable {
-    width: 38px;
-    height: 56px;
-    font-size: 1.1rem;
-    flex-shrink: 0;
+  .deck-tile-item .tile-pattern {
+    font-size: 0.85rem !important;
+  }
+
+  /* AI 힌트 받기 버튼 크기 축소 */
+  .action-bar {
+    margin-top: 0.2rem !important;
+  }
+  .btn-hint {
+    padding: 0.35rem 0.85rem !important;
+    font-size: 0.78rem !important;
+    border-radius: 20px !important;
+  }
+
+  /* 타일 랙 및 손패 카드 - 반응형 폰트/크기 콤팩트화 */
+  .tiles-rack {
+    gap: 3px !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.1rem 0 !important;
+  }
+  .tile-card {
+    width: clamp(36px, 10vw, 48px) !important;
+    height: clamp(54px, 15vw, 72px) !important;
+    border-radius: 6px !important;
+  }
+  .tile-number {
+    font-size: clamp(1.1rem, 3.5vw, 1.5rem) !important;
+  }
+  .tile-pattern {
+    font-size: clamp(0.9rem, 3vw, 1.2rem) !important;
+  }
+  .tile-exposure-badge {
+    font-size: 0.55rem !important;
+    padding: 1px 2px !important;
+    bottom: -16px !important;
+  }
+  .tile-badge-success, .tile-badge-fail, .tile-badge-revealed {
+    font-size: 0.55rem !important;
+    padding: 1px 3px !important;
+    top: -15px !important;
   }
 
   /* 스마트 헬퍼 사이드바: 모바일 전체 화면 커버 */
