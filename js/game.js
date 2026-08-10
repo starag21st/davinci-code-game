@@ -518,7 +518,7 @@ class DaVinciGame {
       const isUserJokerKnown = this.userHand.some(t => t.isJoker && t.color === color);
       const isAiJokerKnown = this.aiHand.some(t => t.isRevealed && t.isJoker && t.color === color);
       if (!isUserJokerKnown && !isAiJokerKnown) {
-        possibleCandidates.push({ color, value: 'J', isJoker: true });
+        possibleCandidates.push({ color, value: 'j', isJoker: true });
       }
     }
 
@@ -530,11 +530,11 @@ class DaVinciGame {
     // 공개된 타일을 제외한 나머지 각각의 숫자를 가져왔을 때의 노출확률 시뮬레이션
     for (const cand of possibleCandidates) {
       const simTile = {
+        id: `sim_draw_target_${cand.color}_${cand.value}`,
         color: cand.color,
         value: cand.value,
         isJoker: cand.isJoker,
-        isRevealed: false,
-        id: `sim_target_${cand.color}_${cand.value}`
+        isRevealed: false
       };
 
       const tempUserHand = [...this.userHand, simTile];
@@ -548,24 +548,28 @@ class DaVinciGame {
         return 0;
       });
 
-      const targetIdx = tempUserHand.findIndex(t => t.id === simTile.id);
-      if (targetIdx === -1) continue;
-
+      // helper.calculateProbabilities(targetHand, myHand, guessHistory, jokerRule)
+      // 상대방 AI 입장에서 유저의 손패(tempUserHand)를 예측한 확률 Map(tileId -> { val: pct })
       const probMap = this.helper.calculateProbabilities(tempUserHand, this.aiHand, this.guessHistory, this.jokerRule);
 
-      if (probMap && probMap.has(targetIdx)) {
-        const possibleVals = probMap.get(targetIdx);
-        if (possibleVals && possibleVals.length > 0) {
-          const maxRiskPct = Math.max(...possibleVals.map(([val, pct]) => pct));
-          totalRiskSum += maxRiskPct;
-          validSampleCount++;
+      if (probMap && probMap.has(simTile.id)) {
+        const probObj = probMap.get(simTile.id); // { "1": 28.8, "2": 28.8, ... }
+        if (probObj) {
+          const pcts = Object.values(probObj);
+          if (pcts.length > 0) {
+            const maxRiskPct = Math.max(...pcts);
+            if (!isNaN(maxRiskPct) && isFinite(maxRiskPct)) {
+              totalRiskSum += maxRiskPct;
+              validSampleCount++;
+            }
+          }
         }
       }
     }
 
     if (validSampleCount === 0) return 0;
 
-    // 각 미공개 숫자를 가져왔을 때의 노출확률 평균 산출
+    // 각 미공개 숫자를 가져왔을 때의 노출확률 산술 평균 산출
     return Math.round(totalRiskSum / validSampleCount);
   }
 
