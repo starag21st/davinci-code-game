@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>다빈치 코드 AI 1대1 대전 & 스마트 헬퍼</title>
+  <meta name="description" content="AI와 1대1로 즐기는 추론 보드게임 다빈치 코드! 확률 계산기, 메모 소거표, 지목 히스토리 헬퍼 제공">
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 배경 오버레이 및 그래디언트 -->
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+
+  <div id="app">
+    <!-- 헤더 / 상단 바 -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-icon">🔮</span>
+        <h1>Da Vinci Code <span class="badge-ai">AI Master</span></h1>
+      </div>
+      <div class="header-controls">
+        <button id="btn-toggle-sound" class="btn-icon btn-sound" title="효과음 켜기/끄기">
+          🔊 <span class="btn-label" id="sound-label">소리 켜짐</span>
+        </button>
+        <button id="btn-show-rules" class="btn-icon btn-rule" title="게임 상세 규칙 안내">
+          📖 <span class="btn-label">게임 규칙</span>
+        </button>
+        <button id="btn-toggle-helper" class="btn-icon btn-accent" title="스마트 헬퍼 사이드바">
+          🧠 <span class="btn-label">통합 스마트 헬퍼</span>
+        </button>
+        <button id="btn-new-game" class="btn-secondary">
+          ⚙️ <span class="btn-label">새 게임 설정</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 메인 게임 보드 -->
+    <main class="game-container">
+      
+      <!-- 상대방(AI) 영역 -->
+      <section class="player-section ai-section" id="ai-section">
+        <div class="player-info">
+          <div class="avatar ai-avatar">🤖</div>
+          <div class="details">
+            <h2 class="player-name">AI 상대방 <span id="ai-level-badge" class="badge">Level: Master</span></h2>
+            <p class="player-status" id="ai-status">상대방의 턴을 기다리는 중...</p>
+          </div>
+          <div class="tile-count-badge">남은 비공개 타일: <strong id="ai-hidden-count">4</strong>개</div>
+        </div>
+
+        <!-- AI 타일 손패 컨테이너 -->
+        <div class="tiles-rack" id="ai-tiles-rack">
+          <!-- JS로 동적 생성됨 -->
+        </div>
+      </section>
+
+      <!-- 중앙 게임 보드 / 2줄 개별 나열 바닥패 / 턴 상태 정보 -->
+      <section class="center-board">
+        <div class="turn-indicator-card" id="turn-card">
+          <div class="turn-status-text" id="turn-status-text">게임 준비 완료! 시작 버튼을 눌러주세요.</div>
+          <div class="turn-sub-text" id="turn-sub-text">조커 세팅 및 AI 난이도를 설정하세요.</div>
+        </div>
+
+        <!-- 바닥패 개별 나열 영역 (윗줄: 검은패 / 아랫줄: 흰패) -->
+        <div class="deck-area-laidout">
+          <div class="deck-rows-container">
+            <!-- 윗줄: 검은색 타일 나열 -->
+            <div class="deck-row-wrapper">
+              <div class="row-label"><span class="badge-black-label">🖤 검은패 (남은 개수: <span id="deck-black-count">8</span>) - 가져올 낱개 카드를 직접 선택하세요</span></div>
+              <div class="deck-row" id="deck-row-black">
+                <!-- JS로 흑색 낱개 카드 렌더링 -->
+              </div>
+            </div>
+
+            <!-- 아랫줄: 흰색 타일 나열 -->
+            <div class="deck-row-wrapper">
+              <div class="row-label"><span class="badge-white-label">🤍 흰색패 (남은 개수: <span id="deck-white-count">8</span>) - 가져올 낱개 카드를 직접 선택하세요</span></div>
+              <div class="deck-row" id="deck-row-white">
+                <!-- JS로 백색 낱개 카드 렌더링 -->
+              </div>
+            </div>
+          </div>
+
+          <div class="drawn-tile-display" id="drawn-tile-display">
+            <!-- 턴에 가져온 타일 표시 영역 -->
+          </div>
+        </div>
+
+        <!-- 액션 제어 버튼 -->
+        <div class="action-bar" id="action-bar">
+          <button id="btn-hint" class="btn-hint" style="display: none;">
+            💡 AI 힌트 받기
+          </button>
+          <button id="btn-pass-turn" class="btn-action btn-success" style="display: none;">
+            ✋ 턴 종료 (가져온 타일 숨기기)
+          </button>
+        </div>
+      </section>
+
+      <!-- 플레이어(유저) 영역 -->
+      <section class="player-section user-section" id="user-section">
+        <div class="player-info">
+          <div class="avatar user-avatar">👨‍💼</div>
+          <div class="details">
+            <h2 class="player-name">나 (Player)</h2>
+            <p class="player-status" id="user-status">나의 타일 패입니다. (숫자가 자동 정렬됨)</p>
+          </div>
+          <div class="tile-count-badge">내 비공개 타일: <strong id="user-hidden-count">4</strong>개</div>
+        </div>
+
+        <!-- 플레이어 타일 손패 컨테이너 -->
+        <div class="tiles-rack" id="user-tiles-rack">
+          <!-- JS로 동적 생성됨 (타일 아래 상대 맞춤 노출 확률 뱃지 표시) -->
+        </div>
+      </section>
+    </main>
+
+    <!-- 스마트 헬퍼 3종 + 지목기록 통합 대시보드 사이드바 -->
+    <aside class="helper-sidebar" id="helper-sidebar">
+      <div class="sidebar-header">
+        <h3>🧠 스마트 추론 통합 대시보드</h3>
+        <button id="btn-close-helper" class="btn-close">&times;</button>
+      </div>
+
+      <div class="sidebar-unified-content">
+        
+        <!-- Section 1: 실시간 확률 계산기 -->
+        <div class="helper-section">
+          <h4 class="section-title">📊 실시간 확률 계산기</h4>
+          <div class="helper-target-info" id="helper-target-info">
+            <p class="info-msg">상대방 타일을 클릭하면 각 숫자별 확률 분석표가 나타납니다.</p>
+          </div>
+          <div id="prob-chart-container" class="prob-chart-container">
+            <!-- 확률 그래프 바 dynamic rendering -->
+          </div>
+        </div>
+
+        <!-- Section 2: 소거 노정표 (Matrix) -->
+        <div class="helper-section">
+          <div class="section-title-bar">
+            <h4 class="section-title">✏️ 소거 노정표</h4>
+            <div class="matrix-mini-controls">
+              <label class="toggle-switch-mini">
+                <input type="checkbox" id="chk-auto-deduce" checked>
+                <span class="label-text">자동소거</span>
+              </label>
+              <button id="btn-reset-matrix" class="btn-micro">초기화</button>
+            </div>
+          </div>
+          <div class="matrix-grid-container" id="matrix-grid-container">
+            <!-- 0~11, 조커 각 타일별 명암 구분 표 -->
+          </div>
+        </div>
+
+        <!-- Section 3: 상세 지목 기록 & 깔끔한 텍스트 전용 필터 버튼 (아이콘 삭제) -->
+        <div class="helper-section">
+          <div class="section-title-bar">
+            <h4 class="section-title">📜 상세 지목 기록</h4>
+            <!-- 아이콘 제거: 글자만 깔끔히 표시 -->
+            <div class="history-filter-group">
+              <button class="history-filter-btn active" data-filter="all">전체</button>
+              <button class="history-filter-btn" data-filter="user">나</button>
+              <button class="history-filter-btn" data-filter="ai">AI</button>
+            </div>
+          </div>
+          <div class="history-list" id="sidebar-history-list">
+            <!-- 지목 히스토리 연동 -->
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- 게임 설정 모달 -->
+    <div class="modal-overlay" id="modal-settings">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2>🎮 대진 설정 & 초기 손패 구성</h2>
+          <button id="btn-open-rules-from-settings" class="btn-secondary btn-small">📖 게임 규칙 설명 보기</button>
+        </div>
+        <div class="modal-body">
+          
+          <!-- AI 난이도 설정 -->
+          <div class="setting-group">
+            <label class="setting-title">🤖 AI 난이도 선택</label>
+            <div class="option-grid option-grid-4">
+              <label class="radio-card">
+                <input type="radio" name="ai-difficulty" value="easy">
+                <div class="card-content">
+                  <span class="icon">🌱</span>
+                  <span class="name">쉬움</span>
+                  <span class="desc">랜덤 무작위 추측</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="ai-difficulty" value="medium">
+                <div class="card-content">
+                  <span class="icon">🔍</span>
+                  <span class="name">보통</span>
+                  <span class="desc">기본 정보 소거</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="ai-difficulty" value="hard">
+                <div class="card-content">
+                  <span class="icon">⚡</span>
+                  <span class="name">어려움</span>
+                  <span class="desc">확률 & 범위 정밀 계산</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="ai-difficulty" value="master" checked>
+                <div class="card-content">
+                  <span class="icon">👑</span>
+                  <span class="name">마스터</span>
+                  <span class="desc">완벽한 백트래킹 CSP Engine</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- 조커 룰 설정 -->
+          <div class="setting-group">
+            <label class="setting-title">🃏 조커(Joker) 타일 규칙 선택</label>
+            <div class="option-grid option-grid-3">
+              <label class="radio-card">
+                <input type="radio" name="joker-rule" value="none">
+                <div class="card-content">
+                  <span class="icon">🚫</span>
+                  <span class="name">조커 제외</span>
+                  <span class="desc">흑/백 0~11 타일만 사용 (24장)</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="joker-rule" value="deck_only" checked>
+                <div class="card-content">
+                  <span class="icon">🃏</span>
+                  <span class="name">시작패 제외 포함</span>
+                  <span class="desc">정석 룰: 더미에만 조커 포함</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="joker-rule" value="allow_start">
+                <div class="card-content">
+                  <span class="icon">🔥</span>
+                  <span class="name">시작패 포함 가능</span>
+                  <span class="desc">하우스 룰: 시작 손패에도 조커 포함</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- 초기 손패 (4장) 흑/백 구성 선택 & 예상 승률 뱃지 -->
+          <div class="setting-group">
+            <label class="setting-title">🎨 초기 손패 (4장) 흑/백 구성 및 예상 승률</label>
+            <div class="option-grid option-grid-5">
+              <label class="radio-card">
+                <input type="radio" name="hand-color" value="2B2W" checked>
+                <div class="card-content">
+                  <span class="icon">☯️</span>
+                  <span class="name">검정 2 : 흰색 2</span>
+                  <span class="desc">가장 균형잡힌 구도</span>
+                  <span class="badge-winrate">🏆 예상 승률 54.2%</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="hand-color" value="3B1W">
+                <div class="card-content">
+                  <span class="icon">🖤</span>
+                  <span class="name">검정 3 : 흰색 1</span>
+                  <span class="desc">검은색 우위 방어</span>
+                  <span class="badge-winrate">⚡ 예상 승률 51.8%</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="hand-color" value="1B3W">
+                <div class="card-content">
+                  <span class="icon">🤍</span>
+                  <span class="name">검정 1 : 흰색 3</span>
+                  <span class="desc">흰색 우위 노출형</span>
+                  <span class="badge-winrate">⚡ 예상 승률 49.5%</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="hand-color" value="4B0W">
+                <div class="card-content">
+                  <span class="icon">◼️</span>
+                  <span class="name">검정 4 : 흰색 0</span>
+                  <span class="desc">올 검은색 변수</span>
+                  <span class="badge-winrate">🔥 예상 승률 46.1%</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="hand-color" value="0B4W">
+                <div class="card-content">
+                  <span class="icon">◻️</span>
+                  <span class="name">검정 0 : 흰색 4</span>
+                  <span class="desc">올 흰색 변수</span>
+                  <span class="badge-winrate">🔥 예상 승률 44.7%</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button id="btn-start-game" class="btn-primary btn-large">🎲 주사위 굴려 선공/후공 정하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 흰색 바탕 주사위 모달 -->
+    <div class="modal-overlay" id="modal-dice">
+      <div class="modal-card modal-small text-center">
+        <div class="modal-header">
+          <h3>🎲 선공 / 후공 주사위 결정</h3>
+        </div>
+        <div class="modal-body">
+          <div class="dice-arena">
+            <div class="dice-box">
+              <span class="dice-label">👨‍💼 내 주사위</span>
+              <div class="dice-display" id="user-dice-display"></div>
+            </div>
+            <div class="dice-vs">VS</div>
+            <div class="dice-box">
+              <span class="dice-label">🤖 AI 주사위</span>
+              <div class="dice-display" id="ai-dice-display"></div>
+            </div>
+          </div>
+          <div class="dice-result-msg" id="dice-result-msg">주사위를 굴려 높은 수가 나온 사람이 선공 선택권을 갖습니다.</div>
+          
+          <div class="turn-choice-group" id="turn-choice-group" style="display: none;">
+            <button id="btn-choose-first" class="btn-primary">⚔️ 내가 선공 하기</button>
+            <button id="btn-choose-second" class="btn-secondary">🛡️ 내가 후공 하기</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-roll-dice" class="btn-primary btn-large">🎲 주사위 굴리기!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 추측 성공 시 행동 선택 & 가져온 패 상대 노출 위험도 분석 모달 -->
+    <div class="modal-overlay" id="modal-success-action">
+      <div class="modal-card modal-small text-center">
+        <div class="modal-header">
+          <h3>🎉 추측 성공! 다음 행동 선택</h3>
+        </div>
+        <div class="modal-body">
+          <p class="success-action-desc" id="success-action-desc">상대방의 타일을 적중시켰습니다!</p>
+
+          <div class="drawn-risk-box" id="drawn-risk-box">
+            <!-- JS로 동적 계산 및 렌더링 -->
+          </div>
+
+          <div class="success-action-buttons" style="margin-top: 1rem;">
+            <button id="btn-continue-guess" class="btn-primary btn-large">🔥 연속 지목하기 (추측 더 하기)</button>
+            <button id="btn-modal-pass-turn" class="btn-success btn-large" style="margin-top: 0.8rem;">✋ 턴 종료하기 (가져온 패 숨기기)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 게임 규칙 설명 모달 -->
+    <div class="modal-overlay" id="modal-rules">
+      <div class="modal-card modal-large">
+        <div class="modal-header">
+          <h2>📜 다빈치 코드 게임 공식 규칙 & 룰 안내</h2>
+          <button id="btn-close-rules" class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body rule-content-body">
+          <div class="rule-section">
+            <h3>1. 기본 룰 및 손패 정렬</h3>
+            <ul>
+              <li>타일은 <strong>검은색(0~11)</strong>과 <strong>흰색(0~11)</strong> 총 24장으로 구성됩니다.</li>
+              <li>자신의 손패는 항상 <strong>작은 수 → 큰 수 (왼쪽 → 오른쪽)</strong>로 자동 정렬됩니다.</li>
+              <li>숫자가 같을 경우에는 <strong>검은색 타일이 왼쪽</strong>, 흰색 타일이 오른쪽에 위치합니다.</li>
+            </ul>
+          </div>
+
+          <div class="rule-section">
+            <h3>2. 턴 진행 및 바닥패 선택</h3>
+            <ul>
+              <li>자신의 턴이 오면 중앙 2줄로 펼쳐진 <strong>검은패/흰패 낱개 카드 중 원하는 타일을 직접 선택</strong>해 가져옵니다.</li>
+              <li>상대방의 비공개 타일 중 하나를 선택하고 예상되는 숫자를 지목합니다.</li>
+              <li>공개된 패는 <strong>반 정도 상단으로 솟아올라</strong> 비공개 패와 한눈에 명확히 구분됩니다.</li>
+            </ul>
+          </div>
+
+          <div class="rule-section highlight-box">
+            <h3>🃏 3가지 조커(Joker) 패 규칙</h3>
+            <ul>
+              <li><strong>조커 제외 모드</strong>: 조커 없이 0~11 (24장)만 사용합니다.</li>
+              <li><strong>시작패 제외 조커 포함 (정석 룰)</strong>: 초기에 4장씩 받는 손패에는 조커가 안 나오고, 중앙 더미에서 드로우할 때만 조커가 등장합니다.</li>
+              <li><strong>시작패 포함 가능 (하우스 룰)</strong>: 처음에 패를 4장 받을 때부터 조커를 뽑을 수 있습니다.</li>
+            </ul>
+          </div>
+
+          <div class="rule-section highlight-box-red">
+            <h3>⚡ 바닥패가 모두 소진되었을 때의 룰</h3>
+            <ul>
+              <li>중앙 타일 더미가 0개가 되면 더 이상 타일을 드로우하지 않고, **곧바로 지목 단계**로 진행합니다.</li>
+              <li>지목 실패 시 <strong>자신의 남아있는 비공개 타일 중 1장</strong>이 즉시 공개되는 페널티를 받습니다.</li>
+            </ul>
+          </div>
+
+          <div class="rule-section">
+            <h3>🏆 승리 조건</h3>
+            <p>상대방의 모든 타일을 먼저 공개(해독)시키는 플레이어가 최종 승리합니다!</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-confirm-rules" class="btn-primary">확인했습니다</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 타일 숫자 추측 입력 모달 -->
+    <div class="modal-overlay" id="modal-guess">
+      <div class="modal-card modal-small">
+        <div class="modal-header">
+          <h3>🎯 타일 숫자 추측 (상대 패를 직접 눌러 변경 가능)</h3>
+          <button id="btn-close-guess" class="btn-close">&times;</button>
+        </div>
+        <div class="modal-body text-center">
+          <p id="guess-target-desc" class="guess-desc">상대방의 <strong>X번 타일</strong>을 선택했습니다.</p>
+          <div class="target-tile-preview" id="target-tile-preview"></div>
+          <div id="guess-history-tip" class="history-tip-badge"></div>
+
+          <label class="input-label">예상되는 숫자를 선택하세요 (진한 버튼만 가능):</label>
+          <div class="number-picker-grid" id="number-picker-grid"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="btn-confirm-guess" class="btn-primary" disabled>지목 확정</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 조커 위치 지정 모달 -->
+    <div class="modal-overlay" id="modal-joker-place">
+      <div class="modal-card joker-banner-card">
+        <div class="joker-banner-header">
+          <span class="joker-banner-icon">🃏</span>
+          <span class="joker-banner-title">조커 타일 위치 선택</span>
+          <span class="joker-banner-sub">— 아래 내 패에서 ⬇ 단쳐 온 조커를 삽입할 위치를 선택하세요</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 게임 결과 모달 -->
+    <div class="modal-overlay" id="modal-game-over">
+      <div class="modal-card modal-result">
+        <div class="result-icon" id="result-icon">🏆</div>
+        <h2 id="result-title">VICTORY!</h2>
+        <p id="result-desc">축하합니다! AI의 모든 암호를 해독했습니다.</p>
+        <div class="result-stats" id="result-stats"></div>
+        <div class="modal-footer">
+          <button id="btn-restart-game" class="btn-primary btn-large">새 게임 시작</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 힌트 대화 모달/팝업 -->
+    <div class="toast-hint" id="toast-hint">
+      <div class="hint-header">
+        <span>💡 AI 스마트 힌트</span>
+        <button id="btn-close-toast" class="btn-close-mini">&times;</button>
+      </div>
+      <div class="hint-body" id="toast-hint-body"></div>
+    </div>
+
+  </div>
+
+  <!-- JavaScript ES Modules -->
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>

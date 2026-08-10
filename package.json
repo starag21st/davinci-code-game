@@ -1,0 +1,12 @@
+{
+  "name": "davinci-code-game",
+  "version": "1.0.0",
+  "description": "Da Vinci Code AI 1대1 대전 & 스마트 헬퍼",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
