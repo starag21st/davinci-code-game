@@ -850,7 +850,7 @@ class DaVinciGame {
       this.numberPickerGrid.appendChild(btn);
     });
 
-    this.toggleSidebar(true);
+    this.toggleSidebar(false); // 수동 사이드바 팝업은 열지 않음 (하단 대시보드 실시간 확률표로만 연동)
     this.showModal(this.modalGuess);
     this.renderAll();
   }
